@@ -1,0 +1,54 @@
+[
+  {
+    "id": "cert-001",
+    "title": "AI Tools & ChatGPT Workshopn",
+    "organization": "be10x",
+    "date": "2026-06-28",
+    "credentialId": "UD-3D-2041",
+    "category": "Artificial Intelligence",
+    "skills": ["ChatGPT", "Prompt Engineering", "AI Productivity", "AI Automation", "Presentation Creation"],
+    "image": "https://res.cloudinary.com/dywgvus16/image/upload/v1784452393/Certificate_page-0001_o3tm41.jpg",
+    "downloadLink": "/certificates/Certificate.pdf",
+    "credentialLink": "/certificates/Certificate.pdf",
+    "description": "Successfully completed the AI Tools & ChatGPT Workshop by be10x, gaining practical experience in AI-powered productivity, presentation creation, data analysis, prompt engineering, coding assistance, and workflow automation."
+  },
+  {
+    "id": "cert-002",
+    "title": "Blender 3D Workflow Mastery",
+    "organization": "Alison",
+    "date": "2026-06-26",
+    "credentialId": "4375-27012921",
+    "category": "3D Modeling",
+    "skills": ["Blender", "Hard Surface Modeling", "3d Modeling", "UV Mapping","Materials", "Rendering","Product Modeling"],
+    "image": "https://res.cloudinary.com/dywgvus16/image/upload/v1784452395/Blender_How_to_Create_a_3D_Barrel_page-0001_1_zyqlhr.jpg",
+    "downloadLink": "/certificates/Blender How to Create a 3D Barrel.pdf",
+    "credentialLink": "/certificates/Blender How to Create a 3D Barrel.pdf",
+    "description": "Successfully completed Alison's Blender: How to Create a 3D Barrel course, learning professional hard-surface modeling techniques, UV mapping, material creation, lighting, and rendering workflows using Blender."
+  },
+  {
+    "id": "cert-003",
+    "title": "Arena Certified Professional in Animation and VFX",
+    "organization": "Arena Animation",
+    "date": "2026-06-10",
+    "credentialId": "44eC1607040",
+    "category": "Animation & VFX",
+    "skills": ["Brand Identity", "Graphic Design","Typography", "Visual Communication", "Layout", "Animation & VFX","Visual Effects","Autodesk Maya","Modeling","Texturing","Lighting", "Rendering", "Compositing","Motion Graphics", "Storyboarding", "Character Animation", "Visual Storytelling", "3D Animation", "2D Animation", "Digital Art"],
+    "image": "https://res.cloudinary.com/dywgvus16/image/upload/v1784452393/arena_animation_page-0001_zf1isb.jpg",
+    "downloadLink": "/certificates/arena animation.pdf",
+    "credentialLink": "/certificates/arena animation.pdf",
+    "description": "Successfully completed the Visual Communication & Brand Design course at Arena Animation, gaining expertise in brand identity, graphic design, and visual storytelling for modern creative brands."
+  },
+  {
+    "id": "cert-004",
+    "title": "ZBrush Sculpting & Character Design",
+    "organization": "Alison",
+    "date": "2026-06-25",
+    "credentialId": "4503-27012921",
+    "category": "3D Sculpting",
+    "skills": ["Sculpting", "ZBrush", "Character Design", "Detailing","High Poly Modeling","3D Art", "Texture Work"],
+    "image": "https://res.cloudinary.com/dywgvus16/image/upload/v1784452395/ZBrush_Sculpting_A_3D_Dragon_page-0001_ujaiug.jpg",
+    "downloadLink": "/certificates/ZBrush Sculpting A 3D Dragon.pdf",
+    "credentialLink": "/certificates/ZBrush Sculpting A 3D Dragon.pdf",
+    "description": "Successfully completed Alison's ZBrush: Sculpting A 3D Dragon course, developing advanced digital sculpting techniques for creature creation, high-poly modeling, detailing, and professional 3D character workflows."
+  }
+]

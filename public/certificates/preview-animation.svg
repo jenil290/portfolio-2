@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect x="80" y="80" width="1040" height="640" rx="32" fill="#111111" stroke="#1F1F1F" stroke-width="3"/>
+  <path d="M220 560 C330 380, 460 360, 600 440 S890 520, 980 300" stroke="#22C55E" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <circle cx="220" cy="560" r="16" fill="#86EFAC"/>
+  <circle cx="600" cy="440" r="16" fill="#22C55E"/>
+  <circle cx="980" cy="300" r="16" fill="#86EFAC"/>
+  <text x="120" y="620" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="44" font-weight="700">Animation Certification</text>
+  <text x="120" y="670" fill="#A3A3A3" font-family="Arial, sans-serif" font-size="24">Motion and storytelling</text>
+</svg>

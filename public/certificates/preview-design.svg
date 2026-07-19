@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect x="80" y="80" width="1040" height="640" rx="32" fill="#111111" stroke="#1F1F1F" stroke-width="3"/>
+  <rect x="220" y="190" width="260" height="320" rx="20" fill="#1b1b1b" stroke="#22C55E" stroke-width="2"/>
+  <rect x="520" y="180" width="350" height="120" rx="18" fill="#22C55E" opacity="0.85"/>
+  <rect x="520" y="330" width="260" height="140" rx="18" fill="#86EFAC" opacity="0.3"/>
+  <text x="120" y="620" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="44" font-weight="700">Design Certification</text>
+  <text x="120" y="670" fill="#A3A3A3" font-family="Arial, sans-serif" font-size="24">Brand and communication</text>
+</svg>
