@@ -353,13 +353,13 @@ const ProjectCard = React.memo(function ProjectCard({ project, onSelect, index }
     <motion.button
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, scale: 1.01 }}
+      whileHover={{ y: -6, scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: "easeOut" }}
+      transition={{ duration: 0.35, delay: index * 0.06, ease: "easeOut" }}
       viewport={{ once: true, margin: "0px 0px -50px 0px" }}
       type="button"
       onClick={() => onSelect(project)}
-      className="group relative overflow-hidden rounded-[24px] border border-white/8 bg-gradient-to-br from-white/5 to-white/2 text-left shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+      className="group relative overflow-hidden rounded-[20px] border border-white/10 bg-gradient-to-br from-white/8 via-white/4 to-white/2 text-left shadow-[0_18px_45px_rgba(0,0,0,0.35)] backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-[0_24px_70px_rgba(0,0,0,0.45)]"
       style={{ aspectRatio: imageAspect }}
     >
       <img
@@ -371,25 +371,33 @@ const ProjectCard = React.memo(function ProjectCard({ project, onSelect, index }
           const img = e.currentTarget;
           setImageAspect(img.naturalWidth / img.naturalHeight);
         }}
-        className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      <div className="absolute inset-0 flex flex-col justify-between p-6 opacity-0 transition-all duration-300 group-hover:opacity-100">
-        <span className="inline-flex w-fit items-center rounded-full border border-primary/40 bg-primary/15 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.3em] text-primary/90 backdrop-blur-md">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 ease-out md:opacity-0 md:group-hover:opacity-100" />
+
+      <div className="absolute bottom-4 left-4 z-20 pointer-events-none md:hidden">
+        <span className="inline-flex w-fit items-center rounded-full border border-primary/35 bg-primary/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-primary/90 backdrop-blur-md">
           {project.category}
         </span>
+      </div>
 
-        <div className="max-w-[90%]">
+      <div className="absolute left-5 top-5 z-20 hidden pointer-events-none transition-all duration-300 ease-out md:block lg:left-5 lg:top-5 md:translate-y-[-8px] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+        <span className="inline-flex w-fit items-center rounded-full border border-primary/35 bg-primary/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-primary/90 backdrop-blur-md">
+          {project.category}
+        </span>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 flex flex-col justify-between p-4 transition-all duration-300 ease-out sm:p-5 md:p-6 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+        <div className="max-w-[92%]">
           <h3 className="font-heading line-clamp-2 text-lg font-bold leading-tight text-white sm:text-xl">
             {project.title}
           </h3>
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-end p-6 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
-        <span className="rounded-full border border-white/30 bg-white/10 p-2.5 text-white/90 backdrop-blur-md transition group-hover:translate-x-1 group-hover:bg-white/20">
+      <div className="absolute inset-x-0 bottom-0 flex items-center justify-end p-4 sm:p-5 md:p-6">
+        <span className="rounded-full border border-white/25 bg-white/10 p-2.5 text-white/90 backdrop-blur-md transition group-hover:translate-x-1 group-hover:bg-white/20">
           <ArrowRight size={18} />
         </span>
       </div>
@@ -406,6 +414,8 @@ const Portfolio = () => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [imageAspect, setImageAspect] = useState(4 / 3);
   const [isPending, startTransition] = useTransition();
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
   const filteredProjects = useMemo(() => {
     return activeCategory === "All"
@@ -426,6 +436,35 @@ const Portfolio = () => {
     setActiveImageIndex(0);
     setIsFullscreen(false);
     setZoomLevel(1);
+  };
+
+  const handleSwipeImage = (direction: number) => {
+    if (!selectedProject || currentImages.length <= 1) return;
+    setActiveImageIndex((value) => {
+      const nextValue = value + direction;
+      if (nextValue < 0) return currentImages.length - 1;
+      if (nextValue >= currentImages.length) return 0;
+      return nextValue;
+    });
+    setIsFullscreen(false);
+    setZoomLevel(1);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+    setTouchEndX(null);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const endX = event.changedTouches[0]?.clientX ?? null;
+    setTouchEndX(endX);
+    if (touchStartX === null || endX === null) return;
+
+    const delta = touchStartX - endX;
+    if (Math.abs(delta) < 50) return;
+    handleSwipeImage(delta > 0 ? 1 : -1);
+    setTouchStartX(null);
+    setTouchEndX(null);
   };
 
   const openProject = (project: Project) => {
@@ -495,15 +534,15 @@ const Portfolio = () => {
 
         <div className="section-container relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="mb-6 inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary/90 backdrop-blur-sm">
+            <span className="mb-5 inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary/90 backdrop-blur-sm sm:mb-6">
               ✨ My Work
             </span>
 
-            <h1 className="font-heading mb-6 text-4xl font-bold md:text-5xl lg:text-6xl xl:text-7xl tracking-tight">
+            <h1 className="font-heading mb-5 text-4xl font-bold tracking-tight sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl">
               Creative <span className="text-gradient">Portfolio</span>
             </h1>
 
-            <p className="mx-auto max-w-3xl text-lg md:text-xl text-white/70 leading-relaxed">
+            <p className="mx-auto max-w-3xl text-base leading-7 text-white/70 sm:text-lg md:text-xl">
               A curated collection of premium 3D assets, brand identities, character illustrations, and visual design work
               created with meticulous attention to detail and artistic excellence.
             </p>
@@ -514,7 +553,7 @@ const Portfolio = () => {
       <section className="pb-16 md:pb-24">
         <div className="section-container">
           {/* FILTER BUTTONS */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="mb-16 flex flex-wrap justify-center gap-3">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="mb-8 flex flex-wrap justify-center gap-2 px-1 sm:mb-12 sm:gap-3">
             {categories.map((category, idx) => (
               <motion.button
                 key={category}
@@ -522,9 +561,9 @@ const Portfolio = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => startTransition(() => setActiveCategory(category))}
                 className={cn(
-                  "rounded-full px-6 py-2.5 text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 border",
+                  "min-h-[44px] rounded-full border px-4 py-2 text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 sm:px-6 sm:py-2.5",
                   activeCategory === category
-                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_24px_rgba(34,197,94,0.3)]"
+                    ? "border-primary bg-primary text-primary-foreground shadow-[0_0_24px_rgba(34,197,94,0.3)]"
                     : "border-white/15 bg-white/8 text-white/80 hover:border-white/30 hover:bg-white/12"
                 )}
                 aria-pressed={activeCategory === category}
@@ -534,7 +573,7 @@ const Portfolio = () => {
             ))}
           </motion.div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-7">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-7">
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project, index) => (
                 <ProjectCard key={project.title} project={project} onSelect={openProject} index={index} />
@@ -551,10 +590,10 @@ const Portfolio = () => {
             )}
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-20 text-center">
-            <div className="mx-auto max-w-2xl rounded-[28px] border border-white/10 bg-gradient-to-br from-white/8 via-white/3 to-white/5 p-10 backdrop-blur-lg">
-              <h3 className="font-heading mb-4 text-2xl md:text-3xl font-bold text-white">Explore My Full Portfolio</h3>
-              <p className="mb-8 text-white/70 text-lg leading-relaxed">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-14 text-center sm:mt-20">
+            <div className="mx-auto max-w-2xl rounded-[24px] border border-white/10 bg-gradient-to-br from-white/8 via-white/3 to-white/5 p-6 backdrop-blur-lg sm:p-10">
+              <h3 className="font-heading mb-4 text-2xl font-bold text-white sm:text-3xl">Explore My Full Portfolio</h3>
+              <p className="mb-8 text-base leading-7 text-white/70 sm:text-lg">
                 This showcase highlights my most significant projects. Visit my Behance profile to see the complete collection of my work.
               </p>
               <motion.a
@@ -563,7 +602,7 @@ const Portfolio = () => {
                 href="https://www.behance.net/pateljenil1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-[16px] border border-primary/40 bg-gradient-to-r from-primary/20 to-primary/10 px-8 py-3.5 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:from-primary/30"
+                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[16px] border border-primary/40 bg-gradient-to-r from-primary/20 to-primary/10 px-6 py-3.5 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:from-primary/30 sm:px-8"
               >
                 View Full Behance Portfolio <ExternalLink size={18} />
               </motion.a>
@@ -593,14 +632,14 @@ const Portfolio = () => {
                 role="dialog"
                 aria-modal="true"
                 aria-label={`${selectedProject.title} project preview`}
-                className="relative w-full overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-white/8 via-white/3 to-white/5 shadow-[0_40_150px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+                className="relative w-full overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-white/8 via-white/3 to-white/5 shadow-[0_40_150px_rgba(0,0,0,0.5)] backdrop-blur-2xl sm:rounded-[32px]"
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="grid gap-0 lg:grid-cols-[minmax(0,1.2fr)_380px] xl:grid-cols-[minmax(0,1.2fr)_420px]">
+                <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.2fr)_380px] xl:grid-cols-[minmax(0,1.2fr)_420px]">
                   {/* LEFT SIDE - IMAGE VIEWER */}
-                  <div className="relative border-b border-white/10 bg-black/20 p-4 sm:p-6 lg:border-b-0 lg:border-r lg:p-8 xl:p-10">
+                  <div className="relative border-b border-white/10 bg-black/20 p-3 sm:p-5 lg:border-b-0 lg:border-r lg:p-8 xl:p-10">
                     {/* PROJECT COUNTER */}
-                    <div className="absolute left-6 top-6 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-4 py-2.5 text-sm font-medium text-white/80 backdrop-blur-md">
+                    <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3.5 py-2 text-sm font-medium text-white/80 backdrop-blur-md sm:left-6 sm:top-6 sm:px-4 sm:py-2.5">
                       <span className="text-primary font-semibold">{(selectedProjectIndex ?? 0) + 1}</span>
                       <span className="text-white/40">/</span>
                       <span>{filteredProjects.length}</span>
@@ -610,14 +649,18 @@ const Portfolio = () => {
                     <button
                       type="button"
                       aria-label="Close project viewer"
-                      className="absolute right-6 top-6 z-10 rounded-full border border-white/10 bg-black/40 p-3 text-white/80 backdrop-blur-md transition hover:bg-black/60 hover:text-white"
+                      className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/80 backdrop-blur-md transition hover:bg-black/60 hover:text-white sm:right-6 sm:top-6 sm:h-12 sm:w-12"
                       onClick={closeViewer}
                     >
-                      <X size={24} />
+                      <X size={20} className="sm:size-24" />
                     </button>
 
                     {/* MAIN IMAGE */}
-                    <div className="mt-12 flex items-center justify-center overflow-hidden rounded-[30px] border border-white/10 bg-black/35 p-3 sm:p-4 lg:p-6">
+                    <div
+                      className="mt-12 flex items-center justify-center overflow-hidden rounded-[22px] border border-white/10 bg-black/35 p-2 sm:mt-14 sm:rounded-[28px] sm:p-3 lg:p-6"
+                      onTouchStart={handleTouchStart}
+                      onTouchEnd={handleTouchEnd}
+                    >
                       <div
                         className="relative flex w-full max-w-full items-center justify-center"
                         style={{ aspectRatio: imageAspect, maxHeight: "74vh", maxWidth: "100%" }}
@@ -643,9 +686,9 @@ const Portfolio = () => {
 
                     {/* THUMBNAIL GALLERY */}
                     {currentImages.length > 1 && (
-                      <div className="mt-7 space-y-3">
-                        <p className="text-xs uppercase tracking-[0.3em] text-white/50 font-medium">Gallery</p>
-                        <div className="flex gap-3 overflow-x-auto pb-2 sm:gap-4">
+                      <div className="mt-4 space-y-3 sm:mt-6">
+                        <p className="text-xs font-medium uppercase tracking-[0.3em] text-white/50">Gallery</p>
+                        <div className="flex gap-2 overflow-x-auto pb-2 sm:gap-3">
                           {currentImages.map((image, index) => (
                             <motion.button
                               key={`${selectedProject.title}-${image}`}
@@ -657,7 +700,7 @@ const Portfolio = () => {
                                 setZoomLevel(1);
                               }}
                               className={cn(
-                                "relative flex-shrink-0 h-24 w-28 overflow-hidden rounded-[16px] border-2 transition-all duration-300 sm:h-28 sm:w-32",
+                                "relative h-20 w-24 flex-shrink-0 overflow-hidden rounded-[16px] border-2 transition-all duration-300 sm:h-24 sm:w-28 md:h-28 md:w-32",
                                 activeImageIndex === index
                                   ? "border-primary shadow-[0_0_24px_rgba(34,197,94,0.35)]"
                                   : "border-white/15 hover:-translate-y-0.5 hover:border-white/30"
@@ -675,18 +718,18 @@ const Portfolio = () => {
 
                     {/* NAVIGATION ARROWS */}
                     {currentImages.length > 1 && (
-                      <div className="mt-6 flex items-center justify-between gap-4">
+                      <div className="mt-4 flex items-center justify-between gap-3 sm:mt-6 sm:gap-4">
                         <button
                           type="button"
                           aria-label="Previous image"
-                          className="rounded-full border border-white/15 bg-black/35 p-3.5 text-white/80 backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-black/55 hover:text-white"
+                          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white/80 backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-black/55 hover:text-white sm:h-14 sm:w-14"
                           onClick={() => {
                             setActiveImageIndex((value) => (value === 0 ? currentImages.length - 1 : value - 1));
                             setIsFullscreen(false);
                             setZoomLevel(1);
                           }}
                         >
-                          <ChevronLeft size={22} />
+                          <ChevronLeft size={22} className="sm:size-[24px]" />
                         </button>
                         <span className="text-sm font-medium tracking-[0.2em] text-white/55">
                           {activeImageIndex + 1} / {currentImages.length}
@@ -694,33 +737,33 @@ const Portfolio = () => {
                         <button
                           type="button"
                           aria-label="Next image"
-                          className="rounded-full border border-white/15 bg-black/35 p-3.5 text-white/80 backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-black/55 hover:text-white"
+                          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white/80 backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-black/55 hover:text-white sm:h-14 sm:w-14"
                           onClick={() => {
                             setActiveImageIndex((value) => (value === currentImages.length - 1 ? 0 : value + 1));
                             setIsFullscreen(false);
                             setZoomLevel(1);
                           }}
                         >
-                          <ChevronRight size={22} />
+                          <ChevronRight size={22} className="sm:size-[24px]" />
                         </button>
                       </div>
                     )}
                   </div>
 
                   {/* RIGHT SIDE - PROJECT INFORMATION */}
-                  <div className="flex flex-col justify-between overflow-y-auto p-6 sm:p-8 lg:max-h-[90vh] lg:p-8 xl:p-10">
+                  <div className="flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:max-h-[90vh] lg:p-8 xl:p-10">
                     {/* PROJECT DETAILS */}
                     <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
-                      <div className="space-y-7">
+                      <div className="space-y-5 sm:space-y-7">
                         {/* CATEGORY & TITLE */}
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                           <div className="flex items-center gap-2">
                             <div className="h-1 w-8 rounded-full bg-primary" />
                             <p className="text-xs font-bold uppercase tracking-[0.4em] text-primary/90">
                               {selectedProject.category}
                             </p>
                           </div>
-                          <h2 className="font-heading text-3xl font-bold leading-[1.1] text-white sm:text-4xl">
+                          <h2 className="font-heading text-2xl font-bold leading-[1.1] text-white sm:text-3xl lg:text-4xl">
                             {selectedProject.title}
                           </h2>
                           <p className="text-[15px] leading-7 text-white/72 sm:text-base">
@@ -729,23 +772,23 @@ const Portfolio = () => {
                         </div>
 
                         {/* INFO GRID */}
-                        <div className="grid grid-cols-2 gap-3">
-                          <motion.div whileHover={{ scale: 1.02 }} className="rounded-[18px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.3em] text-white/50 font-medium">Year</p>
-                            <p className="mt-2.5 text-lg font-semibold text-white">{selectedProject.year}</p>
+                        <div className="grid grid-cols-1 gap-3">
+                          <motion.div whileHover={{ scale: 1.01 }} className="rounded-[18px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/50">Year</p>
+                            <p className="mt-2 text-lg font-semibold text-white">{selectedProject.year}</p>
                           </motion.div>
-                          <motion.div whileHover={{ scale: 1.02 }} className="rounded-[18px] border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
-                            <p className="text-xs uppercase tracking-[0.3em] text-white/50 font-medium">Role</p>
-                            <p className="mt-2.5 text-lg font-semibold text-white">{selectedProject.role}</p>
+                          <motion.div whileHover={{ scale: 1.01 }} className="rounded-[18px] border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+                            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/50">Role</p>
+                            <p className="mt-2 text-lg font-semibold text-white">{selectedProject.role}</p>
                           </motion.div>
                         </div>
 
                         {/* SOFTWARE */}
-                        <motion.div whileHover={{ scale: 1.02 }} className="rounded-[18px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-                          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-white/50 font-medium">Software & Tools</p>
+                        <motion.div whileHover={{ scale: 1.01 }} className="rounded-[18px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm sm:p-5">
+                          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.3em] text-white/50 sm:mb-4">Software & Tools</p>
                           <div className="flex flex-wrap gap-2">
                             {selectedProject.software.map((tool) => (
-                              <span key={tool} className="rounded-full border border-primary/40 bg-primary/15 px-3.5 py-1.5 text-sm font-medium text-primary/90 backdrop-blur-sm">
+                              <span key={tool} className="rounded-full border border-primary/40 bg-primary/15 px-3.5 py-2 text-sm font-medium text-primary/90 backdrop-blur-sm">
                                 {tool}
                               </span>
                             ))}
@@ -755,32 +798,32 @@ const Portfolio = () => {
                     </motion.div>
 
                     {/* ACTION BUTTONS & NAVIGATION */}
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="mt-8 space-y-4 border-t border-white/10 pt-6">
+                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="mt-6 space-y-4 border-t border-white/10 pt-5 sm:mt-8 sm:pt-6">
                       <div className="flex flex-col gap-3">
                         <a
                           href="https://www.behance.net/pateljenil1"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 rounded-[14px] border border-primary/40 bg-primary/20 px-5 py-3 text-sm font-semibold text-primary/90 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/30"
+                          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[14px] border border-primary/40 bg-primary/20 px-5 py-3 text-sm font-semibold text-primary/90 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/30"
                         >
                           View on Behance <ExternalLink size={16} />
                         </a>
                         <button
                           type="button"
-                          className="inline-flex items-center justify-center gap-2 rounded-[14px] border border-white/15 bg-white/8 px-5 py-3 text-sm font-semibold text-white/90 backdrop-blur-sm transition duration-300 hover:border-white/25 hover:bg-white/12"
+                          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[14px] border border-white/15 bg-white/8 px-5 py-3 text-sm font-semibold text-white/90 backdrop-blur-sm transition duration-300 hover:border-white/25 hover:bg-white/12"
                         >
                           Download Assets
                         </button>
                       </div>
 
                       {/* PROJECT NAVIGATION */}
-                      <div className="flex gap-3 pt-3">
+                      <div className="flex gap-3 pt-1 sm:pt-3">
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           type="button"
                           aria-label="Previous project"
-                          className="flex-1 rounded-[14px] border border-white/15 bg-white/8 p-3 text-white/70 backdrop-blur-sm transition hover:bg-white/12 hover:text-white"
+                          className="flex h-12 flex-1 items-center justify-center rounded-[14px] border border-white/15 bg-white/8 text-white/70 backdrop-blur-sm transition hover:bg-white/12 hover:text-white sm:h-14"
                           onClick={() => navigateProject(-1)}
                           disabled={selectedProjectIndex === 0}
                         >
@@ -791,7 +834,7 @@ const Portfolio = () => {
                           whileTap={{ scale: 0.95 }}
                           type="button"
                           aria-label="Next project"
-                          className="flex-1 rounded-[14px] border border-white/15 bg-white/8 p-3 text-white/70 backdrop-blur-sm transition hover:bg-white/12 hover:text-white"
+                          className="flex h-12 flex-1 items-center justify-center rounded-[14px] border border-white/15 bg-white/8 text-white/70 backdrop-blur-sm transition hover:bg-white/12 hover:text-white sm:h-14"
                           onClick={() => navigateProject(1)}
                           disabled={selectedProjectIndex === filteredProjects.length - 1}
                         >
