@@ -108,6 +108,8 @@ const ProjectDetail = () => {
   const [panY, setPanY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
   const currentImages = useMemo(() => {
     if (!project) return [];
@@ -164,6 +166,33 @@ const ProjectDetail = () => {
     setZoomLevel(newZoom);
   };
 
+  const handleSwipeImage = (direction: number) => {
+    if (currentImages.length <= 1) return;
+    setActiveImageIndex((value) => {
+      const nextValue = value + direction;
+      if (nextValue < 0) return currentImages.length - 1;
+      if (nextValue >= currentImages.length) return 0;
+      return nextValue;
+    });
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+    setTouchEndX(null);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const endX = event.changedTouches[0]?.clientX ?? null;
+    setTouchEndX(endX);
+    if (touchStartX === null || endX === null) return;
+
+    const delta = touchStartX - endX;
+    if (Math.abs(delta) < 50) return;
+    handleSwipeImage(delta > 0 ? 1 : -1);
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -199,20 +228,20 @@ const ProjectDetail = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate("/portfolio")}
-          className="fixed left-6 top-6 z-40 flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-white/80 backdrop-blur-md transition hover:bg-black/60 hover:text-white"
+          className="fixed left-4 top-4 z-40 flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3.5 py-2.5 text-white/80 backdrop-blur-md transition hover:bg-black/60 hover:text-white sm:left-6 sm:top-6 sm:px-4"
         >
           <ArrowLeft size={20} />
           <span className="text-sm font-medium">Back</span>
         </motion.button>
 
         {/* HERO IMAGE SECTION */}
-        <section className="relative w-full overflow-hidden bg-black/50 py-8 md:min-h-[90vh]">
+        <section className="relative w-full overflow-hidden bg-black/50 px-3 py-5 sm:px-5 sm:py-8 md:min-h-[90vh]">
           {/* Main Image */}
           <motion.div
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="relative w-full flex items-center justify-center px-5 sm:p-6"
+            className="relative flex w-full items-center justify-center px-0 sm:p-6"
           >
             <div
               className={cn(
@@ -235,7 +264,7 @@ const ProjectDetail = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="h-auto w-full object-contain rounded-[20px] mx-auto"
+                className="mx-auto h-auto w-full rounded-[20px] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:rounded-[24px]"
                 style={{
                   scale: isFullscreen ? zoomLevel : 1,
                   x: isFullscreen ? panX : 0,
@@ -264,7 +293,7 @@ const ProjectDetail = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute right-6 top-6 flex flex-col gap-2"
+                  className="absolute right-3 top-3 flex flex-col gap-2 sm:right-6 sm:top-6"
                 >
                   <div className="rounded-lg border border-white/20 bg-black/60 px-3 py-2 text-sm text-white/80 backdrop-blur-md font-mono">
                     {Math.round(zoomLevel * 100)}%
@@ -302,7 +331,7 @@ const ProjectDetail = () => {
 
             {/* IMAGE COUNTER */}
             {currentImages.length > 1 && (
-              <div className="absolute bottom-6 left-6 rounded-lg border border-white/20 bg-black/60 px-4 py-2 text-sm text-white/80 backdrop-blur-md font-mono">
+              <div className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-black/60 px-3.5 py-2 text-sm font-mono text-white/80 backdrop-blur-md sm:bottom-6 sm:left-6 sm:px-4">
                 {activeImageIndex + 1} / {currentImages.length}
               </div>
             )}
@@ -314,7 +343,7 @@ const ProjectDetail = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setActiveImageIndex((i) => (i === 0 ? currentImages.length - 1 : i - 1))}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-4 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                  className="absolute left-2 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white sm:left-4 sm:h-14 sm:w-14"
                 >
                   <ChevronLeft size={28} />
                 </motion.button>
@@ -322,7 +351,7 @@ const ProjectDetail = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setActiveImageIndex((i) => (i === currentImages.length - 1 ? 0 : i + 1))}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-4 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                  className="absolute right-2 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white sm:right-4 sm:h-14 sm:w-14"
                 >
                   <ChevronRight size={28} />
                 </motion.button>
@@ -338,21 +367,21 @@ const ProjectDetail = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="border-t border-white/10 bg-black/30 px-5 py-10 sm:px-8"
+            className="border-t border-white/10 bg-black/30 px-4 py-8 sm:px-8 sm:py-10"
           >
             <div className="mx-auto max-w-7xl">
-              <div className="mb-4 flex items-center justify-between">
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <h3 className="text-sm uppercase tracking-[0.3em] text-white/50 font-medium">Gallery</h3>
                 <span className="text-xs text-white/30">{currentImages.length} views</span>
               </div>
-              <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide">
+              <div className="flex gap-3 overflow-x-auto pb-3 sm:gap-4">
                 {currentImages.map((image, idx) => (
                   <motion.button
                     key={idx}
                     whileHover={{ scale: 1.08 }}
                     onClick={() => setActiveImageIndex(idx)}
                     className={cn(
-                      "relative flex-shrink-0 h-32 w-52 sm:h-24 sm:w-40 overflow-hidden rounded-[12px] border-2 transition-all duration-300",
+                      "relative h-24 w-28 flex-shrink-0 overflow-hidden rounded-[16px] border-2 transition-all duration-300 sm:h-28 sm:w-36 md:h-32 md:w-44",
                       activeImageIndex === idx
                         ? "border-primary shadow-[0_0_24px_rgba(34,197,94,0.45)]"
                         : "border-white/15 hover:border-white/30"
@@ -379,40 +408,40 @@ const ProjectDetail = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="border-t border-white/10 bg-gradient-to-b from-black/50 to-black px-5 py-12 sm:px-8 sm:py-20"
+          className="border-t border-white/10 bg-gradient-to-b from-black/50 to-black px-4 py-8 sm:px-8 sm:py-16"
         >
-          <div className="mx-auto max-w-3xl space-y-12">
+          <div className="mx-auto max-w-3xl space-y-8 sm:space-y-10">
             {/* TITLE & CATEGORY */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div className="flex items-center gap-2">
                 <div className="h-1 w-8 rounded-full bg-primary" />
                 <span className="text-xs uppercase tracking-[0.4em] text-primary/80 font-bold">
                   {project.category}
                 </span>
               </div>
-              <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl font-bold leading-tight text-white">
+              <h1 className="font-heading text-[28px] font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {project.title}
               </h1>
-              <p className="text-[16.5px] sm:text-xl text-white/70 leading-relaxed max-w-3xl">
+              <p className="max-w-3xl text-[15px] leading-7 text-white/70 sm:text-lg sm:leading-8">
                 {project.description}
               </p>
             </div>
 
             {/* INFO GRID */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              <motion.div whileHover={{ y: -2 }} className="space-y-2 bg-black/20 p-4 rounded-[16px]">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Year</p>
-                <p className="text-2xl font-bold text-white">{project.year}</p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <motion.div whileHover={{ y: -2 }} className="space-y-2 rounded-[18px] border border-white/10 bg-black/20 p-4">
+                <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">Year</p>
+                <p className="text-xl font-semibold text-white">{project.year}</p>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} className="space-y-2 bg-black/20 p-4 rounded-[16px]">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Role</p>
-                <p className="text-xl font-semibold text-white/90">{project.role}</p>
+              <motion.div whileHover={{ y: -2 }} className="space-y-2 rounded-[18px] border border-white/10 bg-black/20 p-4">
+                <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">Role</p>
+                <p className="text-lg font-semibold text-white/90">{project.role}</p>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} className="col-span-1 sm:col-span-2 space-y-2 bg-black/20 p-4 rounded-[16px]">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Software & Tools</p>
+              <motion.div whileHover={{ y: -2 }} className="space-y-2 rounded-[18px] border border-white/10 bg-black/20 p-4 sm:col-span-2">
+                <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">Software & Tools</p>
                 <div className="flex flex-wrap gap-2">
                   {project.software.map((tool, idx) => (
-                    <span key={idx} className="inline-flex items-center justify-center rounded-[12px] border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary/90 min-h-[40px]">
+                    <span key={idx} className="inline-flex min-h-[42px] items-center justify-center rounded-[12px] border border-primary/30 bg-primary/10 px-3.5 py-2 text-sm font-medium text-primary/90">
                       {tool}
                     </span>
                   ))}
@@ -421,7 +450,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* WORKFLOW */}
-            <div className="space-y-4 border-t border-white/10 pt-8">
+            <div className="space-y-4 border-t border-white/10 pt-6 sm:pt-8">
               <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Workflow Process</p>
               <div className="flex flex-wrap gap-2">
                 {project.workflow.map((step, idx) => (
@@ -442,7 +471,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* ACTION BUTTONS */}
-            <div className="flex flex-col sm:flex-row gap-4 border-t border-white/10 pt-8">
+            <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:gap-4 sm:pt-8">
               {project.behance && (
                 <motion.a
                   whileHover={{ scale: 1.05 }}
@@ -470,21 +499,21 @@ const ProjectDetail = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border border-white/20 bg-white/8 font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/12"
+                className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border border-white/20 bg-white/8 px-5 py-3 font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/12 sm:w-auto"
               >
                 <Download size={18} /> Download Assets
               </motion.button>
             </div>
 
             {/* PROJECT NAVIGATION */}
-            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-white/10 pt-8 gap-4">
+            <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 sm:flex-row sm:gap-4 sm:pt-8">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => navigateProject(-1)}
                 disabled={projectIndex === 0}
                 className={cn(
-                  "w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border font-semibold transition",
+                  "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border px-5 py-3 font-semibold transition sm:w-auto",
                   projectIndex === 0
                     ? "border-white/10 bg-white/5 text-white/30 cursor-not-allowed"
                     : "border-white/20 bg-white/8 text-white/80 hover:border-white/30 hover:bg-white/12"
@@ -507,7 +536,7 @@ const ProjectDetail = () => {
                 onClick={() => navigateProject(1)}
                 disabled={projectIndex === projects.length - 1}
                 className={cn(
-                  "w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border font-semibold transition",
+                  "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border px-5 py-3 font-semibold transition sm:w-auto",
                   projectIndex === projects.length - 1
                     ? "border-white/10 bg-white/5 text-white/30 cursor-not-allowed"
                     : "border-white/20 bg-white/8 text-white/80 hover:border-white/30 hover:bg-white/12"
