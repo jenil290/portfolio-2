@@ -57,7 +57,15 @@ export function Footer() {
               Quick Links
             </h4>
             <div className="flex flex-col gap-2">
-              {["Home", "About", "Skills", "Services","Portfolio", "Contact"].map((item) => (
+              {[
+                "Home",
+                "About",
+                "Skills",
+                "Services",
+                "Certificates",
+                "Portfolio",
+                "Contact",
+              ].map((item) => (
                 <Link
                   key={item}
                   to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
