@@ -206,17 +206,17 @@ const ProjectDetail = () => {
         </motion.button>
 
         {/* HERO IMAGE SECTION */}
-        <section className="relative min-h-[90vh] w-full overflow-hidden bg-black/50">
+        <section className="relative w-full overflow-hidden bg-black/50 py-8 md:min-h-[90vh]">
           {/* Main Image */}
           <motion.div
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="relative h-full w-full flex items-center justify-center p-4 sm:p-6"
+            className="relative w-full flex items-center justify-center px-5 sm:p-6"
           >
             <div
               className={cn(
-                "relative w-full max-w-7xl",
+                "relative w-full max-w-none sm:max-w-7xl mx-auto",
                 isDragging && "cursor-grabbing",
                 !isDragging && isFullscreen && "cursor-zoom-out",
                 !isDragging && !isFullscreen && "cursor-zoom-in"
@@ -235,7 +235,7 @@ const ProjectDetail = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="h-auto w-full object-contain"
+                className="h-auto w-full object-contain rounded-[20px] mx-auto"
                 style={{
                   scale: isFullscreen ? zoomLevel : 1,
                   x: isFullscreen ? panX : 0,
@@ -273,7 +273,7 @@ const ProjectDetail = () => {
                     onClick={() => {
                       setZoomLevel(Math.min(3, zoomLevel + 0.5));
                     }}
-                    className="rounded-lg border border-white/20 bg-black/60 p-2 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                    className="rounded-lg border border-white/20 bg-black/60 p-3 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
                   >
                     <ZoomIn size={18} />
                   </button>
@@ -281,7 +281,7 @@ const ProjectDetail = () => {
                     onClick={() => {
                       setZoomLevel(Math.max(1, zoomLevel - 0.5));
                     }}
-                    className="rounded-lg border border-white/20 bg-black/60 p-2 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                    className="rounded-lg border border-white/20 bg-black/60 p-3 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
                   >
                     <ZoomOut size={18} />
                   </button>
@@ -292,7 +292,7 @@ const ProjectDetail = () => {
                       setPanX(0);
                       setPanY(0);
                     }}
-                    className="rounded-lg border border-white/20 bg-black/60 p-2 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                    className="rounded-lg border border-white/20 bg-black/60 p-3 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
                   >
                     <X size={18} />
                   </button>
@@ -314,17 +314,17 @@ const ProjectDetail = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setActiveImageIndex((i) => (i === 0 ? currentImages.length - 1 : i - 1))}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-3 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-4 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size={28} />
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setActiveImageIndex((i) => (i === currentImages.length - 1 ? 0 : i + 1))}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-3 text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 rounded-full border border-white/20 bg-black/60 p-4 min-w-[48px] min-h-[48px] text-white/80 backdrop-blur-md transition hover:bg-black/80 hover:text-white"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight size={28} />
                 </motion.button>
               </>
             )}
@@ -338,23 +338,23 @@ const ProjectDetail = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="border-t border-white/10 bg-black/30 px-6 py-12 sm:px-8"
+            className="border-t border-white/10 bg-black/30 px-5 py-10 sm:px-8"
           >
             <div className="mx-auto max-w-7xl">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-sm uppercase tracking-[0.3em] text-white/50 font-medium">Gallery</h3>
                 <span className="text-xs text-white/30">{currentImages.length} views</span>
               </div>
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+              <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide">
                 {currentImages.map((image, idx) => (
                   <motion.button
                     key={idx}
                     whileHover={{ scale: 1.08 }}
                     onClick={() => setActiveImageIndex(idx)}
                     className={cn(
-                      "relative flex-shrink-0 h-24 w-40 overflow-hidden rounded-lg border-2 transition-all duration-300",
+                      "relative flex-shrink-0 h-32 w-52 sm:h-24 sm:w-40 overflow-hidden rounded-[12px] border-2 transition-all duration-300",
                       activeImageIndex === idx
-                        ? "border-primary shadow-[0_0_24px_rgba(34,197,94,0.4)]"
+                        ? "border-primary shadow-[0_0_24px_rgba(34,197,94,0.45)]"
                         : "border-white/15 hover:border-white/30"
                     )}
                   >
@@ -379,9 +379,9 @@ const ProjectDetail = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="border-t border-white/10 bg-gradient-to-b from-black/50 to-black px-6 py-16 sm:px-8 sm:py-20"
+          className="border-t border-white/10 bg-gradient-to-b from-black/50 to-black px-5 py-12 sm:px-8 sm:py-20"
         >
-          <div className="mx-auto max-w-4xl space-y-12">
+          <div className="mx-auto max-w-3xl space-y-12">
             {/* TITLE & CATEGORY */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -390,29 +390,29 @@ const ProjectDetail = () => {
                   {project.category}
                 </span>
               </div>
-              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-white">
+              <h1 className="font-heading text-[30px] sm:text-5xl md:text-6xl font-bold leading-tight text-white">
                 {project.title}
               </h1>
-              <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-3xl">
+              <p className="text-[16.5px] sm:text-xl text-white/70 leading-relaxed max-w-3xl">
                 {project.description}
               </p>
             </div>
 
             {/* INFO GRID */}
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-              <motion.div whileHover={{ y: -2 }} className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <motion.div whileHover={{ y: -2 }} className="space-y-2 bg-black/20 p-4 rounded-[16px]">
                 <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Year</p>
                 <p className="text-2xl font-bold text-white">{project.year}</p>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} className="space-y-2">
+              <motion.div whileHover={{ y: -2 }} className="space-y-2 bg-black/20 p-4 rounded-[16px]">
                 <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Role</p>
                 <p className="text-xl font-semibold text-white/90">{project.role}</p>
               </motion.div>
-              <motion.div whileHover={{ y: -2 }} className="col-span-2 md:col-span-2 space-y-2">
+              <motion.div whileHover={{ y: -2 }} className="col-span-1 sm:col-span-2 space-y-2 bg-black/20 p-4 rounded-[16px]">
                 <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-medium">Software & Tools</p>
                 <div className="flex flex-wrap gap-2">
                   {project.software.map((tool, idx) => (
-                    <span key={idx} className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary/90">
+                    <span key={idx} className="inline-flex items-center justify-center rounded-[12px] border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary/90 min-h-[40px]">
                       {tool}
                     </span>
                   ))}
@@ -427,10 +427,10 @@ const ProjectDetail = () => {
                 {project.workflow.map((step, idx) => (
                   <motion.div
                     key={idx}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.03 }}
                     className="flex items-center gap-2"
                   >
-                    <span className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/80">
+                    <span className="rounded-[12px] border border-white/20 bg-white/5 px-4 py-3 text-sm text-white/80 min-h-[40px]">
                       {step}
                     </span>
                     {idx < project.workflow.length - 1 && (
@@ -442,7 +442,7 @@ const ProjectDetail = () => {
             </div>
 
             {/* ACTION BUTTONS */}
-            <div className="flex flex-wrap gap-4 border-t border-white/10 pt-8">
+            <div className="flex flex-col sm:flex-row gap-4 border-t border-white/10 pt-8">
               {project.behance && (
                 <motion.a
                   whileHover={{ scale: 1.05 }}
@@ -450,7 +450,7 @@ const ProjectDetail = () => {
                   href={project.behance}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/20 px-6 py-3 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:bg-primary/30"
+                  className="w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border border-primary/40 bg-primary/20 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:bg-primary/30"
                 >
                   View on Behance <ExternalLink size={18} />
                 </motion.a>
@@ -462,7 +462,7 @@ const ProjectDetail = () => {
                   href={project.artstation}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/20 px-6 py-3 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:bg-primary/30"
+                  className="w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border border-primary/40 bg-primary/20 font-semibold text-primary/90 backdrop-blur-sm transition hover:border-primary/60 hover:bg-primary/30"
                 >
                   View on ArtStation <ExternalLink size={18} />
                 </motion.a>
@@ -470,21 +470,21 @@ const ProjectDetail = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/8 px-6 py-3 font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/12"
+                className="w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border border-white/20 bg-white/8 font-semibold text-white/90 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/12"
               >
                 <Download size={18} /> Download Assets
               </motion.button>
             </div>
 
             {/* PROJECT NAVIGATION */}
-            <div className="flex items-center justify-between border-t border-white/10 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-white/10 pt-8 gap-4">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => navigateProject(-1)}
                 disabled={projectIndex === 0}
                 className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-lg border font-semibold transition",
+                  "w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border font-semibold transition",
                   projectIndex === 0
                     ? "border-white/10 bg-white/5 text-white/30 cursor-not-allowed"
                     : "border-white/20 bg-white/8 text-white/80 hover:border-white/30 hover:bg-white/12"
@@ -502,12 +502,12 @@ const ProjectDetail = () => {
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => navigateProject(1)}
                 disabled={projectIndex === projects.length - 1}
                 className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-lg border font-semibold transition",
+                  "w-full sm:w-auto h-14 flex items-center justify-center gap-2 rounded-[12px] border font-semibold transition",
                   projectIndex === projects.length - 1
                     ? "border-white/10 bg-white/5 text-white/30 cursor-not-allowed"
                     : "border-white/20 bg-white/8 text-white/80 hover:border-white/30 hover:bg-white/12"
