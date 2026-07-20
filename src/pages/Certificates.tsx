@@ -1,15 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Eye, Search, Sparkles, Trophy, Clock3, Layers3, Target, ExternalLink, RotateCcw, Maximize2 } from "lucide-react";
+import { Download, Eye, Trophy, Clock3, Layers3, Target, ExternalLink, RotateCcw, Maximize2 } from "lucide-react";
 import certificatesData from "@/data/certificates.json";
 
 type CertificateItem = (typeof certificatesData)[number];
-
-const filters = ["All", "3D", "Animation", "Design", "Adobe", "Autodesk", "Programming", "Marketing", "Other"] as const;
 
 const skillChips = [
   "3D Modeling",
@@ -28,10 +26,10 @@ const skillChips = [
 ];
 
 const timelineStats = [
-  { label: "Years of Learning", value: 6, suffix: "+" },
-  { label: "Certificates Completed", value: 24, suffix: "" },
-  { label: "Software Mastered", value: 12, suffix: "" },
-  { label: "Projects Created", value: 180, suffix: "+" },
+  { label: "Years of Learning", value: 8, suffix: "+" },
+  { label: "Certificates Completed", value: 7, suffix: "" },
+  { label: "Software Mastered", value: 12, suffix: "+" },
+  { label: "Projects Created", value: 30, suffix: "+" },
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -61,8 +59,6 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 }
 
 const Certificates = () => {
-  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>("All");
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCertificate, setSelectedCertificate] = useState<CertificateItem | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -82,21 +78,6 @@ const Certificates = () => {
       );
     }
   }, []);
-
-  const filteredCertificates = useMemo(() => {
-    const normalizedQuery = searchTerm.trim().toLowerCase();
-    return certificatesData.filter((certificate) => {
-      const matchesFilter = activeFilter === "All" || certificate.category === activeFilter;
-      const matchesSearch =
-        normalizedQuery.length === 0 ||
-        [certificate.title, certificate.organization, certificate.description, certificate.skills.join(" ")]
-          .join(" ")
-          .toLowerCase()
-          .includes(normalizedQuery);
-
-      return matchesFilter && matchesSearch;
-    });
-  }, [activeFilter, searchTerm]);
 
   useEffect(() => {
     if (!selectedCertificate) return;
@@ -124,16 +105,16 @@ const Certificates = () => {
       }
 
       if (event.key === "ArrowRight") {
-        const currentIndex = filteredCertificates.findIndex((certificate) => certificate.id === selectedCertificate.id);
-        const nextItem = filteredCertificates[(currentIndex + 1) % filteredCertificates.length];
+        const currentIndex = certificatesData.findIndex((certificate) => certificate.id === selectedCertificate.id);
+        const nextItem = certificatesData[(currentIndex + 1) % certificatesData.length];
         if (nextItem) {
           setSelectedCertificate(nextItem);
         }
       }
 
       if (event.key === "ArrowLeft") {
-        const currentIndex = filteredCertificates.findIndex((certificate) => certificate.id === selectedCertificate.id);
-        const prevItem = filteredCertificates[(currentIndex - 1 + filteredCertificates.length) % filteredCertificates.length];
+        const currentIndex = certificatesData.findIndex((certificate) => certificate.id === selectedCertificate.id);
+        const prevItem = certificatesData[(currentIndex - 1 + certificatesData.length) % certificatesData.length];
         if (prevItem) {
           setSelectedCertificate(prevItem);
         }
@@ -142,7 +123,7 @@ const Certificates = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedCertificate, filteredCertificates]);
+  }, [selectedCertificate]);
 
   const openCertificate = (certificate: CertificateItem) => {
     setSelectedCertificate(certificate);
@@ -254,7 +235,7 @@ const Certificates = () => {
         <div className="section-container">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
-              { label: "Total Certificates", value: "4", icon: Trophy },
+              { label: "Total Certificates", value: "7", icon: Trophy },
               { label: "Learning Hours", value: "480+", icon: Clock3 },
               { label: "Platforms Completed", value: "3", icon: Layers3 },
               { label: "Skills Earned", value: "50+", icon: Target },
@@ -286,57 +267,8 @@ const Certificates = () => {
 
       <section className="py-8 md:py-12">
         <div className="section-container">
-          <div className="card-glass rounded-3xl border border-border/70 p-4 md:p-6">
-            <div className="flex flex-wrap gap-2">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                    activeFilter === filter
-                      ? "border-primary/40 bg-primary text-primary-foreground shadow-[0_0_20px_rgba(34,197,94,0.25)]"
-                      : "border-border/70 bg-card/40 text-muted-foreground hover:border-primary/30 hover:text-foreground"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-            <div className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-              <div className="rounded-2xl border border-border/60 bg-background/40 p-4">
-                <div className="flex items-center gap-3 text-foreground">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  <p className="font-medium">Featured categories</p>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['3D Modeling', 'Texturing', 'Autodesk Maya', 'Substance Painter', 'Adobe Photoshop', 'Premiere Pro', 'After Effects', 'UI Design', 'Graphic Design', 'Branding', 'Digital Marketing', 'Programming'].map((item) => (
-                    <span key={item} className="rounded-full border border-border/60 bg-card/70 px-3 py-1.5 text-sm text-muted-foreground">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="rounded-2xl border border-border/60 bg-background/40 p-4">
-                <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Search</p>
-                <div className="mt-3 flex items-center gap-3 rounded-xl border border-border/60 bg-card/70 px-4 py-3 text-sm text-muted-foreground">
-                  <Search className="h-4 w-4 text-primary" />
-                  <input
-                    value={searchTerm}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    placeholder="Search certifications"
-                    className="w-full bg-transparent outline-none placeholder:text-muted-foreground"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-8 md:py-12">
-        <div className="section-container">
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredCertificates.map((certificate, index) => (
+            {certificatesData.map((certificate, index) => (
               <motion.article
                 key={certificate.id}
                 initial={{ opacity: 0, y: 24, scale: 0.98 }}

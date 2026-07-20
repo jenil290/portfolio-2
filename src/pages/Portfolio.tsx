@@ -426,7 +426,7 @@ const ProjectCard = React.memo(function ProjectCard({ project, onSelect, index }
 });
 
 const Portfolio = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("3D Art & Animation");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
