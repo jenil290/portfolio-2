@@ -115,7 +115,7 @@ export function PortfolioPreview() {
           <div className="h-px w-full bg-white/10 sm:hidden" />
           <div>
             <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-white/55">Projects</p>
-            <p className="text-foreground">18+</p>
+            <p className="text-foreground">30+</p>
           </div>
           <div className="h-px w-full bg-white/10 sm:hidden" />
           <div>
