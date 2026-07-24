@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 
-const showreelVideo = "/showreel.mp4";
+const showreelVideo = "https://res.cloudinary.com/dywgvus16/video/upload/v1784895224/3d_modeling_showreel_vzsf83.mp4";
 
 export function PortfolioPreview() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,6 +31,14 @@ export function PortfolioPreview() {
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-[15px] md:text-base lg:text-[17px]">
             A collection of my best 3D modeling, texturing, and rendering projects, showcasing my skills in creating high-quality game-ready and cinematic assets.
           </p>
+
+          <Link
+            to="/portfolio"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground"
+          >
+            View Full Portfolio
+            <ArrowRight size={18} />
+          </Link>
         </motion.div>
 
         <motion.div
@@ -45,7 +54,7 @@ export function PortfolioPreview() {
               {!isPlaying ? (
                 <>
                   <img
-                    src="/placeholder.svg"
+                    src="https://res.cloudinary.com/dywgvus16/image/upload/v1784896172/showreel_giz8ei.png"
                     alt="3D artist showreel preview"
                     loading="lazy"
                     className="block aspect-video w-full object-cover"
