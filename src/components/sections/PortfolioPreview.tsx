@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import showreelVideo from "@/assets/3d modeling showreel.mp4";
+
+const showreelVideo = "/showreel.mp4";
 
 export function PortfolioPreview() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -110,7 +111,7 @@ export function PortfolioPreview() {
           <div className="h-px w-full bg-white/10 sm:hidden" />
           <div>
             <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-white/55">Category</p>
-            <p className="text-foreground">3D Artist & Motion Designer</p>
+            <p className="text-foreground">3D Artist & 3D Modeler</p>
           </div>
         </motion.div>
       </div>
