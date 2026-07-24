@@ -24,8 +24,8 @@ export function PortfolioPreview() {
             Featured Work
           </span>
 
-          <h2 className="font-heading mb-2 text-3xl font-bold sm:text-4xl lg:text-[2.75rem]">
-            <span className="text-gradient">2026 Showreel</span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            2026<span className="text-gradient"> Showreel</span>
           </h2>
 
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-[15px] md:text-base lg:text-[17px]">
