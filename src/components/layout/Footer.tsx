@@ -11,6 +11,7 @@ const socialLinks = [
       </svg>
     ),
   },
+
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/in/jenil-patel-84477b273/",
@@ -20,6 +21,7 @@ const socialLinks = [
       </svg>
     ),
   },
+  
   {
     name: "ArtStation",
     url: "https://www.artstation.com/pateljenil6",
@@ -46,11 +48,11 @@ export function Footer() {
               <span className="text-foreground"> Patel</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Multimedia Expert specializing in visual storytelling, brand identity, 
-              and cutting-edge digital design.
+              Multimedia Expert Bridging creativity and technology to craft compelling visual narratives. 
+              Specializing in brand identity, 3D modeling, VFX, and digital design.
             </p>
           </div>
-
+                
           {/* Quick Links */}
           <div>
             <h4 className="font-heading font-semibold text-foreground mb-4">

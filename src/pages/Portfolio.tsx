@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ExternalLink, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import useWindowSize from "@/hooks/use-window-size";
 
-// 3D Art & Animation
+// 3D Modeling & Texturing
 import sniperRifle from "@/assets/portfolio/3d-sniper-rifle.png";
 import bombDevice from "@/assets/portfolio/3d-bomb-device.png";
 import steampunkComputer from "@/assets/portfolio/3d-steampunk-computer.png";
@@ -38,7 +37,7 @@ import graphics6 from "@/assets/project/graphics/packging2.jpeg";
 import graphics7 from "@/assets/project/graphics/Poster D_Adajan_CM_Surat _Jenil Patel.jpg";
 
 const categories = [
-  "3D Art & Animation",
+  "3D Modeling & Texturing",
   "Brand Identity",
   "Illustration's",
   "Graphics and social media design",
@@ -48,7 +47,7 @@ const categories = [
 const projects = [
   {
     title: "Sci-Fi Concept Rifle",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A high-quality futuristic sci-fi energy rifle designed to showcase advanced hard-surface modeling, material creation, and realistic texturing.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784442392/ChatGPT_Image_Jul_19_2026_11_51_12_AM_ml6lic.png",
     images: [
@@ -67,7 +66,7 @@ const projects = [
   },
   {
     title: "Military Bomb Device Prop",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A high-quality futuristic explosive device prop created to showcase advanced hard-surface modeling, PBR texturing, and cinematic rendering.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784442849/ChatGPT_Image_Jul_19_2026_11_56_45_AM_cha07t.png",
     images: [
@@ -80,8 +79,41 @@ const projects = [
     software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
   },
   {
+    title: "VINTAGE LARGE FORMAT CAMERA",
+    category: "3D Modeling & Texturing",
+    description: "A highly detailed vintage large-format camera created to showcase precision hard-surface modeling, authentic materials, and cinematic PBR rendering.",
+    image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784447649/ChatGPT_Image_Jul_19_2026_01_18_02_PM_xivtwi.png",
+    images: [
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447649/ChatGPT_Image_Jul_19_2026_01_18_02_PM_xivtwi.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447303/IMG_20260201_222855_331_y7whcs.jpg",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222852_628_hby8ea.jpg",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222848_481_t3omlx.jpg",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222850_321_c3lsc1.jpg",
+    ],
+    year: "2024",
+    role: "Hard Surface Artist",
+    software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
+  },
+  {
+    title: "ORION-X FUTURISTIC HEAVY WEAPON",
+    category: "3D Modeling & Texturing",
+    description: "A battle-worn futuristic sci-fi heavy weapon showcasing precision hard-surface modeling, realistic PBR texturing, and industrial-grade mechanical design.",
+    image: "https://res.cloudinary.com/dywgvus16/image/upload/v1785216572/poster_dw3xsa.png",
+    images: [
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216572/poster_dw3xsa.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216570/orion_x2_lo5xdi.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216569/orion_x_mvm4sx.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216568/orion_x3_acpezv.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216572/orion_x5_sfizei.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1785216574/orion_x4_jrvmvr.png",
+    ],
+    year: "2024",
+    role: "Hard Surface Artist",
+    software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
+  },
+  {
     title: "Steampunk Computer Machine",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A retro-futuristic vintage computer concept showcasing intricate hard-surface modeling, premium PBR texturing, and cinematic rendering.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784443252/ChatGPT_Image_Jul_19_2026_12_10_10_PM_ykrpow.png",
     images: [
@@ -97,7 +129,7 @@ const projects = [
   },
   {
     title: "Rustic Tata Cargo Truck",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A highly detailed vintage Tata cargo truck showcasing realistic hard-surface modeling, authentic weathering, and production-quality PBR texturing.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784443068/ChatGPT_Image_Jul_19_2026_12_01_39_PM_ukthax.png",
     images: [
@@ -111,8 +143,25 @@ const projects = [
     software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
   },
   {
+    title: "Twin-Barrel Mechanical Turret",
+    category: "3D Modeling & Texturing",
+    description: "A highly detailed fictional twin-barrel mechanical turret created to showcase advanced hard-surface modeling, layered weathering, and cinematic PBR rendering.",
+    image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/ChatGPT_Image_Jul_19_2026_01_11_55_PM_gmvgrl.png",
+    images: [
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/ChatGPT_Image_Jul_19_2026_01_11_55_PM_gmvgrl.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447044/Machine_Gun_2_ocutuo.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447044/Machine_Gun_1_dbm4j3.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447043/Machine_Gun_3_hikhzs.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/Machine_Gun_5_oxkq33.png",
+      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447047/Machine_Gun_4_jxwaxn.png",
+    ],
+    year: "2025",
+    role: "Hard Surface Artist",
+    software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
+  },
+  {
     title: "IAF O71 FIGHTER JET",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A futuristic fighter jet concept showcasing advanced hard-surface modeling, precision detailing, and cinematic PBR rendering.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784443504/ChatGPT_Image_Jul_19_2026_11_19_24_AM_jkpdzw.png",
     images: [
@@ -131,7 +180,7 @@ const projects = [
   },
   {
     title: "Pushpak Viman ",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A highly detailed Pushpak Viman concept inspired by Indian mythology, showcasing intricate hard-surface modeling, ornamental craftsmanship, and cinematic PBR rendering.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784445104/111_etqz0z.png",
     images: [
@@ -141,46 +190,13 @@ const projects = [
       "https://res.cloudinary.com/dywgvus16/image/upload/v1784553628/p3_k3b7xt.png",
       "https://res.cloudinary.com/dywgvus16/image/upload/v1784553630/p4_mbmq8d.png",
     ],
-    year: "2025",
-    role: "Hard Surface Artist",
-    software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
-  },
-  {
-    title: "Twin-Barrel Mechanical Turret",
-    category: "3D Art & Animation",
-    description: "A highly detailed fictional twin-barrel mechanical turret created to showcase advanced hard-surface modeling, layered weathering, and cinematic PBR rendering.",
-    image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/ChatGPT_Image_Jul_19_2026_01_11_55_PM_gmvgrl.png",
-    images: [
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/ChatGPT_Image_Jul_19_2026_01_11_55_PM_gmvgrl.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447044/Machine_Gun_2_ocutuo.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447044/Machine_Gun_1_dbm4j3.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447043/Machine_Gun_3_hikhzs.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447045/Machine_Gun_5_oxkq33.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447047/Machine_Gun_4_jxwaxn.png",
-    ],
-    year: "2025",
-    role: "Hard Surface Artist",
-    software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
-  },
-  {
-    title: "VINTAGE LARGE FORMAT CAMERA",
-    category: "3D Art & Animation",
-    description: "A highly detailed vintage large-format camera created to showcase precision hard-surface modeling, authentic materials, and cinematic PBR rendering.",
-    image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784447649/ChatGPT_Image_Jul_19_2026_01_18_02_PM_xivtwi.png",
-    images: [
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447649/ChatGPT_Image_Jul_19_2026_01_18_02_PM_xivtwi.png",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447303/IMG_20260201_222855_331_y7whcs.jpg",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222852_628_hby8ea.jpg",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222848_481_t3omlx.jpg",
-      "https://res.cloudinary.com/dywgvus16/image/upload/v1784447646/IMG_20260201_222850_321_c3lsc1.jpg",
-    ],
-    year: "2025",
+    year: "2026",
     role: "Hard Surface Artist",
     software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
   },
   {
     title: "Aetherlock MK-I",
-    category: "3D Art & Animation",
+    category: "3D Modeling & Texturing",
     description: "A high-detail steampunk sci-fi rifle concept showcasing intricate hard-surface modeling, mechanical detailing, and cinematic PBR rendering.",
     image: "https://res.cloudinary.com/dywgvus16/image/upload/v1784447926/ChatGPT_Image_Jul_19_2026_01_26_48_PM_bxb58w.png",
     images: [
@@ -192,7 +208,7 @@ const projects = [
       "https://res.cloudinary.com/dywgvus16/image/upload/v1784447924/mechanical_sniper3_pkghbh.jpg",
       "https://res.cloudinary.com/dywgvus16/image/upload/v1784447922/mechanical_sniper5_jiaqpz.jpg",
     ],
-    year: "2025",
+    year: "2026",
     role: "Hard Surface Artist",
     software: ["Maya", "Substance Painter", "Marmoset Toolbag"],
   },
@@ -426,7 +442,7 @@ const ProjectCard = React.memo(function ProjectCard({ project, onSelect, index }
 });
 
 const Portfolio = () => {
-  const [activeCategory, setActiveCategory] = useState("3D Art & Animation");
+  const [activeCategory, setActiveCategory] = useState("3D Modeling & Texturing");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -442,8 +458,6 @@ const Portfolio = () => {
       ? projects
       : projects.filter((project) => project.category === activeCategory);
   }, [activeCategory]);
-
-  const { width } = useWindowSize();
 
   const currentImages = useMemo(() => {
     if (!selectedProject) return [];
@@ -828,12 +842,6 @@ const Portfolio = () => {
                         >
                           View on Behance <ExternalLink size={16} />
                         </a>
-                        <button
-                          type="button"
-                          className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-[14px] border border-white/15 bg-white/8 px-5 py-3 text-sm font-semibold text-white/90 backdrop-blur-sm transition duration-300 hover:border-white/25 hover:bg-white/12"
-                        >
-                          Download Assets
-                        </button>
                       </div>
 
                       {/* PROJECT NAVIGATION */}

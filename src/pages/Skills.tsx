@@ -29,7 +29,7 @@ const softwareSkills = [
   { name: "Substance Painter", level: 85 },
 ];
 
-const masterSkills = [
+const masterSkills = [  
   {
     title: "Brand Identity",
     description: "Creating cohesive visual identities that communicate brand values and resonate with target audiences.",

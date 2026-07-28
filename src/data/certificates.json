@@ -12,6 +12,7 @@
     "credentialLink": "/certificates/Certificate.pdf",
     "description": "Successfully completed the AI Tools & ChatGPT Workshop by be10x, gaining practical experience in AI-powered productivity, presentation creation, data analysis, prompt engineering, coding assistance, and workflow automation."
   },
+
   {
     "id": "cert-002",
     "title": "Blender 3D Workflow Mastery",
@@ -25,6 +26,7 @@
     "credentialLink": "/certificates/Blender How to Create a 3D Barrel.pdf",
     "description": "Successfully completed Alison's Blender: How to Create a 3D Barrel course, learning professional hard-surface modeling techniques, UV mapping, material creation, lighting, and rendering workflows using Blender."
   },
+
   {
     "id": "cert-003",
     "title": "Arena Certified Professional in Animation and VFX",
@@ -38,6 +40,7 @@
     "credentialLink": "/certificates/arena animation.pdf",
     "description": "Successfully completed the Visual Communication & Brand Design course at Arena Animation, gaining expertise in brand identity, graphic design, and visual storytelling for modern creative brands."
   },
+
   {
     "id": "cert-004",
     "title": "ZBrush Sculpting & Character Design",
@@ -51,6 +54,7 @@
     "credentialLink": "/certificates/ZBrush Sculpting A 3D Dragon.pdf",
     "description": "Successfully completed Alison's ZBrush: Sculpting A 3D Dragon course, developing advanced digital sculpting techniques for creature creation, high-poly modeling, detailing, and professional 3D character workflows."
   },
+
   {
     "id": "cert-005",
     "title": "Creative Minds Certificate",
@@ -64,6 +68,7 @@
     "credentialLink": "/certificates/creative minds.pdf",
     "description": "Completed a creative design and visual communication certification focused on concept development, branding, and polished presentation skills."
   },
+
   {
     "id": "cert-006",
     "title": "Spandan Certificate",
@@ -77,6 +82,7 @@
     "credentialLink": "/certificates/spandan.pdf",
     "description": "Completed a performance and creative communication certificate centered on expressive storytelling, confidence, and presentation skills."
   },
+  
   {
     "id": "cert-007",
     "title": "Elementary Drawing Grade Examination",
