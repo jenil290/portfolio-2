@@ -70,7 +70,7 @@ export function Navigation() {
               </Link>
             ))}
             <Button variant="hero" size="sm" asChild>
-              <a href="/Jenil-Patel-CV.jpg" download="Jenil-Patel-CV.jpg">
+              <a href="/Jenil_Patel_CV.pdf" download="Jenil_Patel_CV.pdf">
                 Download CV
               </a>
             </Button>

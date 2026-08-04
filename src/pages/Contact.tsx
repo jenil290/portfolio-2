@@ -295,7 +295,7 @@ const Contact = () => {
                   Get a copy of my professional resume.
                 </p>
                 <Button variant="heroOutline" asChild>
-                  <a href="/Jenil-Patel-CV.jpg" download>
+                  <a href="/Jenil_Patel_CV.pdf" download>
                     Download CV
                     <ExternalLink size={16} />
                   </a>
